@@ -82,30 +82,67 @@ SCENARIO_2_HALLUCINATED = False   # True or False
 
 # Paste the final [AI] message.
 SCENARIO_2_FINAL_ANSWER = """
-The Albanach has a capacity of 180, which is under 300. Haymarket Vaults is 160, also too small. Guilford Arms has 200 capacity but no vegan options. Bow Bar has 80 capacity and vegan, but it's full. None of them meet both the capacity and availability. So I ne...
+<think>
+Okay, let's see. The user wants a venue for 300 people with vegan options. The known venues are The Albanach, The Haymarket Vaults, The Guilford Arms, and The Bow Bar. I checked each one using the check_pub_availability function.
+
+The Albanach has a capacity of 180, which is under 300. Haymarket Vaults is 160, also too small. Guilford Arms has 200 capacity but no vegan options. Bow Bar has 80 capacity and vegan, but it's full. None of them meet both the capacity and availability. So I need to tell the user that none of the known venues can handle their request. Maybe suggest looking for other options outside the known list or adjusting the requirements.
+</think>
+
+None of the known Edinburgh venues can accommodate 300 guests with vegan options. The maximum capacity among the checked venues is 200 (The Guilford Arms), but it lacks vegan options. The largest venue with vegan options (The Albanach) only holds 180 people. You may need to consider alternative venues outside this list or adjust your requirements.
 """
 
 # Scenario 3: out of scope (train times)
 # Did the agent try to call a tool?
-SCENARIO_3_TRIED_A_TOOL = None   # True or False
+SCENARIO_3_TRIED_A_TOOL = False   # True or False
 
-SCENARIO_3_RESPONSE = "FILL_ME_IN"
+SCENARIO_3_RESPONSE = """
+<think>
+Okay, the user is asking about the last train time from Edinburgh Waverley to London tonight. Let me check the tools provided.
+
+Looking at the available functions: check_pub_availability, get_edinburgh_weather, calculate_catering_cost, generate_event_flyer. None of these are related to train schedules. The functions are for checking pub availability, weather, catering costs, and generating flyers.
+
+Since there's no tool for train times, I can't use any of the provided functions to answer this. I need to inform the user that I don't have access to that information and suggest they check a train service website or app.
+</think>
+
+I don't have access to real-time train schedules or transportation data. For the most accurate information about the last train from Edinburgh Waverley to London, I recommend checking:
+1. The National Rail website (https://www.nationalrail.co.uk)
+2. Train service apps like Citymapper or Trainline
+3. The specific train operator's website (e.g., LNER)
+
+Would you like help with anything related to Edinburgh pubs, weather, or event planning instead?"
+"""
 
 # Would this behaviour be acceptable in a real booking assistant? Min 30 words.
 SCENARIO_3_ACCEPTABLE = """
-FILL ME IN
+Yes, this is acceptable. It's better if it admits it can't do something instead of hallucinating in an attempt to please, i.e. suggesting random departure times etc. Unnecessary creativity here will bring more harm than good. So yes, this is acceptable.
 """
 
 # ── Task D ─────────────────────────────────────────────────────────────────
 
 # Paste the Mermaid output from `python exercise2_langgraph.py task_d` here.
 TASK_D_MERMAID_OUTPUT = """
-PASTE MERMAID OUTPUT HERE
+---
+config:
+  flowchart:
+    curve: linear
+---
+graph TD;
+        __start__([<p>__start__</p>]):::first
+        agent(agent)
+        tools(tools)
+        __end__([<p>__end__</p>]):::last
+        __start__ --> agent;
+        agent -.-> __end__;
+        agent -.-> tools;
+        tools --> agent;
+        classDef default fill:#f2f0ff,line-height:1.2
+        classDef first fill-opacity:0
+        classDef last fill:#bfb6fc
 """
 
 # Compare the LangGraph graph to exercise3_rasa/data/flows.yml. Min 30 words.
 TASK_D_COMPARISON = """
-FILL ME IN
+The graph shows a loop where agent calls tools. A model decides at runtime whether to call a tool or finish. Whereas flows.yml describes the explicit flows with predefined conversations paths. LangGraph flow is flexible, Rasa CALM is deterministic. These are two different approaches for different kinds of tasks.
 """
 
 # ── Reflection ─────────────────────────────────────────────────────────────
@@ -114,5 +151,5 @@ FILL ME IN
 # Must reference a specific behaviour from your run.
 
 MOST_SURPRISING = """
-FILL ME IN
+What was quite surprising to me is that in the Task A the agent was prompted to check the weather 'for outdoor drinks suitability', the weather tool outdoor_ok: false. The flyer prompt wasn't mentioning indoor/outdoor options and the agent just disregarded the weather info. It performed the tool call because it was instructed and just discarded the data. This highlights the importance of including more info about the intent to help the agent reason and make the right judgement, I guess
 """
