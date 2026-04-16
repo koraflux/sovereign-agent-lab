@@ -91,5 +91,5 @@ WEEK_5_ARCHITECTURE = """
 # Must reference specific things you observed in your runs. Min 60 words.
 
 GUIDING_QUESTION_ANSWER = """
-FILL ME IN
+For research we should use LangGraph agent because when we start research we don't know the exact sequence, but it needs to be determined during the runtime. For example, when in exercise 2, scenario 1 after the data for Bow Bar returned meets_all_constraints=false, it pivoted and made check_pub_availability call for the Albanach. And in Rasa CALM this kind of behaviour doesnt exist, every transition is deterimnistic. Which is exactly what we need for confirmation conversation as there are legal commitments and money involved (it's high stakes interaction). If we swap them, then then LangGraph could agree to way higher price (> than 300) potentially and Rasa would just get stuck when picking the venue.
 """
